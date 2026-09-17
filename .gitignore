@@ -1,0 +1,5 @@
+work/
+outputs/
+.playwright-cli/
+.sites-runtime/
+.DS_Store
