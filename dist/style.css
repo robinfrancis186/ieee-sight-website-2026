@@ -17,3 +17,5 @@
 @media(max-width:800px){.header nav{top:76px}}
 
 .team-link{margin-top:24px}.project-footnote .underlink{margin-left:18px}@media(max-width:700px){.project-footnote .underlink{display:flex;margin:15px 0 0}}
+
+.brand .sight-logo{width:120px;height:auto;display:block}.footer .sight-logo{width:150px}.page-footer .brand .sight-logo{width:120px}@media(max-width:800px){.header .brand .sight-logo{width:102px}}
