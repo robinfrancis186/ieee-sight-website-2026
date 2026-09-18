@@ -25,3 +25,16 @@ text = Path('dist/index.html').read_text()
 assert 'Switch Assembly' not in text and 'OCTOBER 2026' not in text
 assert 'aria-expanded="false"' in text and 'prefers-reduced-motion' in Path('dist/style.css').read_text()
 print('PASS: page assets, internal links, anchors, accessibility hooks and event-free scope')
+
+import re
+for css in Path('dist').glob('*.css'):
+    for url in re.findall(r'url\(([^)]+)\)', css.read_text()):
+        assert (css.parent / url.strip("\"' ")).exists(), f'Missing CSS asset: {url}'
+for url in re.findall(r"image:'([^']+)'", Path('dist/app.mjs').read_text()):
+    assert (Path('dist') / url).exists(), f'Missing dialog image: {url}'
+print('PASS: stylesheet and dynamic project assets')
+team = Path('dist/team.html').read_text()
+assert team.count('class="person"') == 35
+assert 'Robin Francis' in team and 'Inclusive Innovation Coordinator' in team
+assert 'mailto:ieeekerala.sight@gmail.com' in Path('dist/contact.html').read_text()
+print('PASS: 35-person leadership directory and enquiry destination')

@@ -3,3 +3,9 @@ outputs/
 .playwright-cli/
 .sites-runtime/
 .DS_Store
+.vercel/
+.vercel
+
+.openai/
+.env
+.env.*
