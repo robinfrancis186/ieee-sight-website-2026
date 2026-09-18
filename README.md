@@ -40,3 +40,7 @@ The contact form creates an email draft in the visitor’s mail application; it 
 ## Asset rights
 
 IEEE marks and documentary photos remain with their respective rights holders. Leadership portraits come from the supplied 2026 announcements. Generated illustrations are labelled. See `dist/sources.html` for credits. Font and icon licences are included alongside their assets. This repository does not grant an open licence to IEEE marks or third-party photos.
+
+## Funding directory
+
+Funding programmes and the dated status review are maintained in `build-pages.mjs`. Verify official links and deadlines before updating the review date; regenerate with `node build-pages.mjs`. The directory links directly to programme applications and does not collect applications itself.
