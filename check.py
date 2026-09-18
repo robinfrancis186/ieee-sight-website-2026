@@ -38,3 +38,33 @@ assert team.count('class="person"') == 35
 assert 'Robin Francis' in team and 'Inclusive Innovation Coordinator' in team
 assert 'mailto:ieeekerala.sight@gmail.com' in Path('dist/contact.html').read_text()
 print('PASS: 35-person leadership directory and enquiry destination')
+
+# Guard metadata, canonical URLs and shared navigation on every generated page.
+import json
+from xml.etree import ElementTree
+base = 'https://ieee-sight-kerala.vercel.app/'
+expected_nav = ['index.html','mission.html','projects.html','events.html','funding.html','team.html','contact.html']
+titles = set()
+for file in Path('dist').glob('*.html'):
+    source = file.read_text()
+    title = re.search(r'<title>(.*?)</title>', source).group(1)
+    assert title not in titles, f'Duplicate title: {file}'
+    titles.add(title)
+    assert len(re.findall(r'<h1(?:\s|>)', source)) == 1, file
+    canonical = re.findall(r'<link rel="canonical" href="([^"]+)"', source)
+    assert canonical == [base + ('' if file.name == 'index.html' else file.name)], file
+    for name in ['description', 'theme-color', 'twitter:card']:
+        assert len(re.findall(f'<meta name="{name}"', source)) == 1, (file, name)
+    assert '<meta property="og:image"' in source
+    schema = re.findall(r'<script type="application/ld\+json">(.*?)</script>', source)
+    assert len(schema) == 1, file
+    graph = json.loads(schema[0])['@graph']
+    assert graph[0]['email'] == 'ieeekerala.sight@gmail.com'
+    nav = re.search(r'<nav[^>]*aria-label="Main navigation"[^>]*>(.*?)</nav>', source).group(1)
+    assert re.findall(r'href="([^"]+)"', nav) == expected_nav, file
+    assert source.count('aria-label="Breadcrumb"') == (0 if file.name in ['index.html','404.html'] else 1)
+sitemap = ElementTree.parse('dist/sitemap.xml')
+locations = {node.text for node in sitemap.findall('.//{*}loc')}
+assert locations == {base + ('' if p.name == 'index.html' else p.name) for p in Path('dist').glob('*.html') if p.name != '404.html'}
+assert 'content="noindex"' in Path('dist/404.html').read_text()
+print('PASS: unique SEO metadata, structured data, shared navigation, breadcrumbs and complete sitemap')

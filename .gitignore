@@ -9,3 +9,5 @@ outputs/
 .openai/
 .env
 .env.*
+
+output/playwright/
