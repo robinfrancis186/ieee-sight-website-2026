@@ -12,3 +12,5 @@
 .event-subtitle{font-size:21px;color:var(--blue);margin-top:16px;line-height:1.4}.event-date{font-size:14px;margin-top:22px}.event-date span{color:var(--muted)}
 
 .event-entry{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:start}.event-poster{max-width:420px;width:100%}.event-poster img{width:100%;height:auto;border:1px solid var(--line);border-radius:4px}.event-poster figcaption{font-size:12px;color:var(--muted);margin-top:10px}.event-poster figcaption p{margin-top:8px}.event-content>.funding-detail{margin-top:28px}@media(max-width:700px){.event-entry{grid-template-columns:1fr}.event-poster{max-width:420px}}
+
+.slt-meeting{scroll-margin-top:28px}.meeting-gallery{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:start}.meeting-gallery img{width:100%;height:auto;border-radius:4px}.meeting-gallery figcaption{font-size:13px;color:var(--muted);margin-top:12px}.meeting-gallery figcaption a{display:block;text-decoration:underline;text-underline-offset:4px;margin-top:6px}@media(max-width:700px){.meeting-gallery{grid-template-columns:1fr}}
