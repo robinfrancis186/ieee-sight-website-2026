@@ -23,3 +23,5 @@
 @media(min-width:981px){.header nav{gap:clamp(16px,2vw,34px)}.header nav>a{white-space:nowrap}}
 
 .breadcrumbs{padding:18px var(--space);font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}.breadcrumbs a{text-decoration:underline;text-underline-offset:3px}.header nav{gap:20px}@media(min-width:981px) and (max-width:1199px){.header .nav-cta{display:none}}
+
+.footer .sight-logo{mix-blend-mode:screen}
