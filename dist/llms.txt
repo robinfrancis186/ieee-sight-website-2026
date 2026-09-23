@@ -1,0 +1,20 @@
+# IEEE Kerala Section SIGHT
+
+> Official website of IEEE Kerala Section SIGHT, a volunteer group in Kerala, India working with communities on humanitarian technology.
+
+SIGHT means Special Interest Group on Humanitarian Technology. The global programme began in Kerala in 2011; the Kerala Section group was established in 2013. These are different milestones.
+Contact: ieeekerala.sight@gmail.com
+
+## Pages
+- [Mission and scope](https://sight.ieeekerala.org/mission.html): Programme purpose, vision and governance.
+- [Projects](https://sight.ieeekerala.org/projects.html): Historical water, energy and education projects, with original IEEE sources.
+- [Funding opportunities](https://sight.ieeekerala.org/funding.html): Programme summaries and official application links. Always verify current eligibility and deadlines with the funder.
+- [Past events](https://sight.ieeekerala.org/events.html): Archived events; poster registration details are historical.
+- [2026 leadership](https://sight.ieeekerala.org/team.html): Professional and student leadership.
+- [Contact](https://sight.ieeekerala.org/contact.html): Volunteering and partnerships. The form prepares an email draft; it does not submit messages.
+- [Sources and credits](https://sight.ieeekerala.org/sources.html): References and image provenance. Illustrations are identified separately from project photographs.
+
+## Discovery
+- [XML sitemap](https://sight.ieeekerala.org/sitemap.xml)
+
+This directory is supplementary. The linked pages and original programme sources take precedence; it does not imply current project availability or guaranteed funding.

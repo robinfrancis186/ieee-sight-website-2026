@@ -51,8 +51,8 @@ for(const file of readdirSync('dist').filter(f=>f.endsWith('.html'))) {
  const title=html.match(/<title>(.*?)<\/title>/)[1];
  const description=html.match(/<meta name="description" content="([^"]*)">/)?.[1] || 'Sources, image credits and historical context for IEEE Kerala Section SIGHT projects, events and leadership.';
  const url=base+(file==='index.html'?'':file);
- html=html.replace(/<meta (?:name="(?:description|theme-color|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/g,'').replace(/<link rel="canonical"[^>]*>/g,'').replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g,'');
- const org={'@type':'Organization','@id':base+'#organization',name:'IEEE Kerala Section SIGHT',alternateName:'IEEE SIGHT Kerala',url:base,logo:base+'assets/sight-kerala-logo.png',email:'ieeekerala.sight@gmail.com',areaServed:{'@type':'State',name:'Kerala'},sameAs:['https://www.linkedin.com/company/sight-kerala/']};
+ html=html.replace(/<meta (?:name="(?:description|robots|theme-color|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/g,'').replace(/<link rel="canonical"[^>]*>/g,'').replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/g,'');
+ const org={'@type':'Organization','@id':base+'#organization',name:'IEEE Kerala Section SIGHT',alternateName:'IEEE SIGHT Kerala',url:base,logo:base+'assets/sight-kerala-logo.png',email:'ieeekerala.sight@gmail.com',description:'A volunteer group connecting students, engineers and community partners in Kerala to apply technology to local needs.',parentOrganization:{'@type':'Organization',name:'IEEE Kerala Section',url:'https://ieeekerala.org/'},contactPoint:{'@type':'ContactPoint',contactType:'Volunteering and community partnerships',email:'ieeekerala.sight@gmail.com'},areaServed:{'@type':'State',name:'Kerala'},sameAs:['https://www.linkedin.com/company/sight-kerala/']};
  const website={'@type':'WebSite','@id':base+'#website',url:base,name:'IEEE Kerala Section SIGHT',publisher:{'@id':org['@id']},inLanguage:'en'};
  const graph=[org,website,{'@type':file==='contact.html'?'ContactPage':file==='mission.html'?'AboutPage':['projects.html','events.html','funding.html','team.html'].includes(file)?'CollectionPage':'WebPage','@id':url+'#webpage',url,name:title,description,isPartOf:{'@id':website['@id']},about:{'@id':org['@id']},inLanguage:'en'}];
  if(file!=='index.html' && file!=='404.html') {
@@ -62,7 +62,38 @@ for(const file of readdirSync('dist').filter(f=>f.endsWith('.html'))) {
   html=html.replace(/(<nav class="breadcrumbs"[\s\S]*?<\/nav>)<nav class="breadcrumbs"[\s\S]*?<\/nav>/,'$1');
   graph.push({'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:base},{'@type':'ListItem',position:2,name:label,item:url}]});
  }
- const metadata=`<meta name="description" content="${description}"><meta name="theme-color" content="#062c46"><link rel="canonical" href="${url}"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:type" content="website"><meta property="og:url" content="${url}"><meta property="og:site_name" content="IEEE Kerala Section SIGHT"><meta property="og:image" content="${base}icon-512.png"><meta property="og:image:width" content="512"><meta property="og:image:height" content="512"><meta property="og:image:alt" content="IEEE Kerala Section SIGHT logo"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="${base}icon-512.png">${file==='404.html'?'<meta name="robots" content="noindex">':''}<script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@graph':graph}).replaceAll('<','\\u003c')}</script>`;
+ // Describe only collections and project facts that are visible on each page.
+ let items;
+ if(file==='projects.html') items=Object.entries(projects).map(([id,p])=>({name:p.title,url:base+`project-${id}.html`}));
+ if(file==='funding.html') items=grants.map(([id,name])=>({name,url:url+'#'+id}));
+ if(file==='events.html') items=pastEvents.map(e=>({name:e.title+(e.subtitle?' — '+e.subtitle:''),url:url+'#'+e.id}));
+ if(items) {const list={'@type':'ItemList','@id':url+'#list',itemListElement:items.map((item,i)=>({'@type':'ListItem',position:i+1,...item}))};graph.push(list);graph[2].mainEntity={'@id':list['@id']};}
+ const project=Object.entries(projects).find(([id])=>file===`project-${id}.html`)?.[1];
+ if(project) {graph[2].citation=project.source;graph[2].spatialCoverage={'@type':'Place',name:project.location};}
+ const metadata=`<meta name="description" content="${description}"><meta name="theme-color" content="#062c46"><link rel="canonical" href="${url}"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:type" content="website"><meta property="og:url" content="${url}"><meta property="og:site_name" content="IEEE Kerala Section SIGHT"><meta property="og:image" content="${base}icon-512.png"><meta property="og:image:width" content="512"><meta property="og:image:height" content="512"><meta property="og:image:alt" content="IEEE Kerala Section SIGHT logo"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${description}"><meta name="twitter:image" content="${base}icon-512.png"><meta name="robots" content="${file==='404.html'?'noindex':'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}"><script type="application/ld+json">${JSON.stringify({'@context':'https://schema.org','@graph':graph}).replaceAll('<','\\u003c')}</script>`;
  html=html.replace('</head>',metadata+'</head>');
  writeFileSync(`dist/${file}`,html);
 }
+
+// Optional plain-text guide for AI readers; ordinary HTML remains authoritative.
+writeFileSync('dist/llms.txt',`# IEEE Kerala Section SIGHT
+
+> Official website of IEEE Kerala Section SIGHT, a volunteer group in Kerala, India working with communities on humanitarian technology.
+
+SIGHT means Special Interest Group on Humanitarian Technology. The global programme began in Kerala in 2011; the Kerala Section group was established in 2013. These are different milestones.
+Contact: ieeekerala.sight@gmail.com
+
+## Pages
+- [Mission and scope](${base}mission.html): Programme purpose, vision and governance.
+- [Projects](${base}projects.html): Historical water, energy and education projects, with original IEEE sources.
+- [Funding opportunities](${base}funding.html): Programme summaries and official application links. Always verify current eligibility and deadlines with the funder.
+- [Past events](${base}events.html): Archived events; poster registration details are historical.
+- [2026 leadership](${base}team.html): Professional and student leadership.
+- [Contact](${base}contact.html): Volunteering and partnerships. The form prepares an email draft; it does not submit messages.
+- [Sources and credits](${base}sources.html): References and image provenance. Illustrations are identified separately from project photographs.
+
+## Discovery
+- [XML sitemap](${base}sitemap.xml)
+
+This directory is supplementary. The linked pages and original programme sources take precedence; it does not imply current project availability or guaranteed funding.
+`);

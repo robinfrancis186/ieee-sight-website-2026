@@ -68,3 +68,26 @@ locations = {node.text for node in sitemap.findall('.//{*}loc')}
 assert locations == {base + ('' if p.name == 'index.html' else p.name) for p in Path('dist').glob('*.html') if p.name != '404.html'}
 assert 'content="noindex"' in Path('dist/404.html').read_text()
 print('PASS: unique SEO metadata, structured data, shared navigation, breadcrumbs and complete sitemap')
+
+# Crawler policy and collection schema must agree with visible page anchors.
+from urllib.robotparser import RobotFileParser
+robots = RobotFileParser(); robots.parse(Path('dist/robots.txt').read_text().splitlines())
+assert robots.site_maps() == [base + 'sitemap.xml']
+for crawler in ['Googlebot', 'Bingbot', 'OAI-SearchBot', 'Claude-SearchBot', 'PerplexityBot']:
+    assert all(robots.can_fetch(crawler, url) for url in locations), crawler
+for file in Path('dist').glob('*.html'):
+    source = file.read_text()
+    policies = re.findall(r'<meta name="robots" content="([^"]+)"', source)
+    assert len(policies) == 1 and ('noindex' in policies[0]) == (file.name == '404.html'), file
+    graph = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>',source).group(1))['@graph']
+    for node in graph:
+        if node['@type'] != 'ItemList': continue
+        assert [i['position'] for i in node['itemListElement']] == list(range(1,len(node['itemListElement'])+1))
+        for item in node['itemListElement']:
+            path=urlsplit(item['url']); target=Path('dist')/path.path.lstrip('/')
+            assert target.exists()
+            assert not path.fragment or path.fragment in Page(target.read_text()).ids
+for link in re.findall(r'\]\((https://[^)]+)\)', Path('dist/llms.txt').read_text()):
+    assert (Path('dist')/urlsplit(link).path.lstrip('/')).is_file(), link
+assert 'https://sight.ieee.org/sight-groups/' not in Path('dist/index.html').read_text()
+print('PASS: crawler access, robots directives, collection schema anchors and AI text directory links')
