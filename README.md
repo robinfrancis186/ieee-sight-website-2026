@@ -1,6 +1,8 @@
 # IEEE SIGHT Website 2026
 
-Live website: https://ieee-sight-kerala.vercel.app
+Live website: https://sight.ieeekerala.org
+
+Vercel preview: https://ieee-sight-kerala.vercel.app
 
 2026 leadership directory, mission and vision, documented projects, and contact information for IEEE Kerala Section SIGHT.
 
@@ -44,3 +46,9 @@ IEEE marks and documentary photos remain with their respective rights holders. L
 ## Funding directory
 
 Funding programmes and the dated status review are maintained in `build-pages.mjs`. Verify official links and deadlines before updating the review date; regenerate with `node build-pages.mjs`. The directory links directly to programme applications and does not collect applications itself.
+
+## Official hosting (cPanel)
+
+The official domain is `https://sight.ieeekerala.org/`. cPanel Git Version Control manages the public GitHub checkout at `repositories/ieee-sight-website-2026`, outside `public_html`. After building, checking and pushing changes, use **Manage → Pull or Deploy → Update from Remote → Deploy HEAD Commit**. A GitHub push alone does not publish to cPanel.
+
+`.cpanel.yml` runs `deploy-cpanel.sh`, which backs up the current document root under `site-backups/release-*` before copying only `dist/` into `public_html`. The repository and backup directories are not public. `dist/.htaccess` configures HTTPS, the homepage canonical redirect, JavaScript module MIME types and the custom 404. No hosting credentials belong in this repository.
