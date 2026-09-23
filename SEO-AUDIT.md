@@ -52,3 +52,11 @@ cPanel confirmed release `dabae16b15ef7c6f8aa360c2db8a9868748319b0` on 23 Septem
 Local requests with Googlebot, bingbot, OAI-SearchBot and PerplexityBot user-agent strings returned 200. This confirms user-agent handling from this test client; it does not prove access from those services' actual crawler IP addresses.
 
 The published new FAQ expands, the project dialog opens, and its full-project link navigates correctly. No browser error logs were recorded in the checked session. GitHub contains the same published site files.
+
+## Link and button follow-up — 23 September 2026
+
+Reviewed every HTML link destination and the JavaScript handlers. Fixed the homepage footer so About, Our work and Contact open their corresponding pages. Learning resources now opens the official group resources page; Find a SIGHT Group opens the group finder. Renamed the governance link to describe its resource page rather than imply a direct manual download.
+
+Browser checks: all three project filters show the correct counts; each of the three project cards opens the matching story and full-page/source destinations; all six FAQs expand; motion pause toggles; the three participation cards update the join message and target #join. Mission, events, funding and team section jumps reach their matching anchors. Contact form rejects an empty name. Email draft destination, subject, actual line breaks and encoding pass the existing Node check; no email was sent. Static checks cover every internal asset/anchor and assert the corrected footer/resource destinations and Robin Francis profile link.
+
+External HTTP checks remain subject to IEEE.org and LinkedIn automated-client restrictions (202/999 responses). These destinations are retained, not represented as fully validated external services. A browser media batch was interrupted by the browser control connection; the exact event media destinations were inspected and their assets passed the previous live crawl.

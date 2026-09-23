@@ -91,3 +91,14 @@ for link in re.findall(r'\]\((https://[^)]+)\)', Path('dist/llms.txt').read_text
     assert (Path('dist')/urlsplit(link).path.lstrip('/')).is_file(), link
 assert 'https://sight.ieee.org/sight-groups/' not in Path('dist/index.html').read_text()
 print('PASS: crawler access, robots directives, collection schema anchors and AI text directory links')
+
+# Destination contracts: successful URLs must also match their labels.
+home=Path('dist/index.html').read_text()
+assert 'class="resource reveal" href="https://sight.ieee.org/groups/resources/"' in home
+assert 'class="resource reveal" href="https://sight.ieee.org/groups/find-a-sight-group/"' in home
+footer=re.search(r'<nav aria-label="Footer navigation">(.*?)</nav>',home).group(1)
+assert re.findall(r'href="([^"]+)"',footer)==['mission.html','projects.html','events.html','contact.html']
+assert 'href="https://robinfrancis.in"' in Path('dist/team.html').read_text()
+for file in Path('dist').glob('*.html'):
+    assert not re.search(r'href="(?:#|javascript:[^"]*)"',file.read_text()), file
+print('PASS: resource, footer and profile destinations; no placeholder links')
