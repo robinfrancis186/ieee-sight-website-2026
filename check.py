@@ -42,7 +42,7 @@ print('PASS: 35-person leadership directory and enquiry destination')
 # Guard metadata, canonical URLs and shared navigation on every generated page.
 import json
 from xml.etree import ElementTree
-base = 'https://ieee-sight-kerala.vercel.app/'
+base = 'https://sight.ieeekerala.org/'
 expected_nav = ['index.html','mission.html','projects.html','events.html','funding.html','team.html','contact.html']
 titles = set()
 for file in Path('dist').glob('*.html'):
