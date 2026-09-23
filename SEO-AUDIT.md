@@ -44,3 +44,11 @@ External crawl: 25 unique destinations. One confirmed broken SIGHT groups URL wa
 - Current site content is English. Add hreflang only if real translated pages are published.
 
 Search and generative-search visibility depend on useful source-backed content, crawlability and indexing. No guaranteed AEO/GEO score or AI citation claim is made. Guidance: [Google AI optimization](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), [robots directives](https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag), [current IEEE SIGHT groups page](https://sight.ieee.org/groups/).
+
+## Post-deployment verification
+
+cPanel confirmed release `dabae16b15ef7c6f8aa360c2db8a9868748319b0` on 23 September 2026. All **71/71** public page/asset requests returned HTTP 200; the deliberate nonexistent URL returned 404. All 12 HTML documents plus robots.txt, sitemap.xml and llms.txt matched the local release byte-for-byte (the first two pages were rechecked after deployment completed). CSS and robots.txt return the new revalidation policy.
+
+Local requests with Googlebot, bingbot, OAI-SearchBot and PerplexityBot user-agent strings returned 200. This confirms user-agent handling from this test client; it does not prove access from those services' actual crawler IP addresses.
+
+The published new FAQ expands, the project dialog opens, and its full-project link navigates correctly. No browser error logs were recorded in the checked session. GitHub contains the same published site files.
